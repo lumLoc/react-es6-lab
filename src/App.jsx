@@ -4,7 +4,8 @@ import viteLogo from '/vite.svg'
 import './App.css'
 //import userlist component
 import UserList from './UserList.jsx';
-
+//importing counter component
+import Counter from './Counter.jsx';
 
 function App() {
   const [count, setCount] = useState(0)
