@@ -2,6 +2,9 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+//import userlist component
+import UserList from './UserList.jsx';
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -12,6 +15,10 @@ function App() {
   const person = { name: 'Alice', age: 25 };
   const { name, age } = person;
   console.log('Destructured:', name, age);
+  
+  //adding users
+  const users = ['Alice','Bob','Charlie'];
+  return <UserList users={users} />;
 
   return (
     <>
