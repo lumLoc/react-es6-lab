@@ -1,0 +1,48 @@
+.dashboard-container {
+  background: #020617;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.dashboard-header {
+  background: #020617;
+  border-bottom: 1px solid #334155;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-user {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.logout-button {
+  background: #ef4444;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.dashboard-content {
+  padding: 20px;
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.dashboard-card {
+  background: #020617;
+  border: 1px solid #334155;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
