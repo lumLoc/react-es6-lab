@@ -2,83 +2,100 @@ import { useState } from "react";
 import "./LoginForm.css";
 
 function LoginForm({ onLogin }) {
+  const [isRegister, setIsRegister] = useState(false);
+
+  const [accounts, setAccounts] = useState([
+    { username: "admin", password: "1234" },
+  ]);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!username || !password) {
-      setError("Please enter both username and password.");
+      setMessage("Please enter both username and password.");
       return;
     }
 
-    setLoading(true);
-    setError("");
+    if (isRegister) {
+      const exists = accounts.find((acc) => acc.username === username);
+      if (exists) {
+        setMessage("Username already exists.");
+        return;
+      }
 
-    // Simulate API call
-    setTimeout(() => {
-      if (username === "admin" && password === "1234") {
+      setAccounts([...accounts, { username, password }]);
+      setMessage("Account created! You can now login.");
+      setIsRegister(false);
+      setUsername("");
+      setPassword("");
+    } else {
+      const user = accounts.find(
+        (acc) => acc.username === username && acc.password === password
+      );
+
+      if (user) {
         onLogin(username);
       } else {
-        setError("Invalid username or password.");
+        setMessage("Invalid username or password.");
       }
-      setLoading(false);
-    }, 1200);
+    }
   };
 
   return (
-    <div className={`login-container ${error ? "shake" : ""}`}>
-      <h2>Login</h2>
+    <div className="login-page">
+      <h1 className="main-title">Welcome to Secure Portal</h1>
+      <p className="subtitle">
+        {isRegister
+          ? "Create your account to get started"
+          : "Login to continue to your dashboard"}
+      </p>
 
-      <form onSubmit={handleSubmit} className="login-card">
-        <div>
+      <div className="login-card">
+        <h2>{isRegister ? "Create Account" : "Login"}</h2>
+
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Username"
             value={username}
-            className={`login-input ${error ? "input-error" : ""}`}
             onChange={(e) => setUsername(e.target.value)}
-            disabled={loading}
           />
-        </div>
 
-        <div>
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             value={password}
-            className={`login-input ${error ? "input-error" : ""}`}
             onChange={(e) => setPassword(e.target.value)}
-            disabled={loading}
           />
-        </div>
 
-        <div className="options-row">
-          <label>
+          <label className="show-password">
             <input
               type="checkbox"
               checked={showPassword}
               onChange={() => setShowPassword(!showPassword)}
-              disabled={loading}
-            />{" "}
+            />
             Show password
           </label>
-        </div>
 
-        <button
-          type="submit"
-          className="login-button"
-          disabled={loading}
-        >
-          {loading ? "Authenticating..." : "Login"}
-        </button>
-      </form>
+          <button type="submit">
+            {isRegister ? "Create Account" : "Login"}
+          </button>
 
-      {error && <p className="error-text">{error}</p>}
+          {message && <p className="error">{message}</p>}
+        </form>
+
+        <p className="switch-mode">
+          {isRegister ? "Already have an account?" : "Don't have an account?"}
+          <span onClick={() => setMessage("") || setIsRegister(!isRegister)}>
+            {isRegister ? " Login" : " Create one"}
+          </span>
+        </p>
+      </div>
     </div>
   );
 }
