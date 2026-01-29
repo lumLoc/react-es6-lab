@@ -5,20 +5,33 @@ function LoginForm({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (username === "admin" && password === "1234") {
-      setError("");
-      onLogin(username);
-    } else {
-      setError("Invalid username or password");
+    if (!username || !password) {
+      setError("Please enter both username and password.");
+      return;
     }
+
+    setLoading(true);
+    setError("");
+
+    // Simulate API call
+    setTimeout(() => {
+      if (username === "admin" && password === "1234") {
+        onLogin(username);
+      } else {
+        setError("Invalid username or password.");
+      }
+      setLoading(false);
+    }, 1200);
   };
 
   return (
-    <div className="login-container">
+    <div className={`login-container ${error ? "shake" : ""}`}>
       <h2>Login</h2>
 
       <form onSubmit={handleSubmit} className="login-card">
@@ -29,21 +42,39 @@ function LoginForm({ onLogin }) {
             value={username}
             className={`login-input ${error ? "input-error" : ""}`}
             onChange={(e) => setUsername(e.target.value)}
+            disabled={loading}
           />
         </div>
 
         <div>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Password"
             value={password}
             className={`login-input ${error ? "input-error" : ""}`}
             onChange={(e) => setPassword(e.target.value)}
+            disabled={loading}
           />
         </div>
 
-        <button type="submit" className="login-button">
-          Login
+        <div className="options-row">
+          <label>
+            <input
+              type="checkbox"
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)}
+              disabled={loading}
+            />{" "}
+            Show password
+          </label>
+        </div>
+
+        <button
+          type="submit"
+          className="login-button"
+          disabled={loading}
+        >
+          {loading ? "Authenticating..." : "Login"}
         </button>
       </form>
 
