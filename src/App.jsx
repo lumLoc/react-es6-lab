@@ -4,15 +4,31 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+// adding loginform & dashboard
+import LoginForm from "./LoginForm";
+import Dashboard from "./Dashboard";
+
 // import components
 import UserList from './UserList.jsx'
 import Counter from './Counter.jsx'
 import UserAPI from './UserAPI.jsx'
 
-const isLoggedIn = true;
-
 function App() {
   const [count, setCount] = useState(0)
+
+  // login states
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState("");
+
+  const handleLogin = (username) => {
+    setIsLoggedIn(true);
+    setCurrentUser(username);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setCurrentUser("");
+  };
 
   const names = ['Alice','Bob','Charlie']
   const doubled = names.map(name => name.length * 2)
@@ -26,6 +42,21 @@ function App() {
 
   return (
     <>
+      {/* LOGIN AREA */}
+      <div>
+        {isLoggedIn ? (
+          <Dashboard user={currentUser} onLogout={handleLogout} />
+        ) : (
+          <LoginForm onLogin={handleLogin} />
+        )}
+      </div>
+
+      <hr />
+
+      <div>
+        {isLoggedIn ? <p>Welcome back!</p> : <p>Please log in</p>}
+      </div>
+
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -33,10 +64,6 @@ function App() {
         <a href="https://react.dev" target="_blank">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
-      </div>
-
-      <div>
-        {isLoggedIn ? <p>Welcome back!</p> : <p>Please log in</p>}
       </div>
 
       <h1>Vite + React</h1>
@@ -72,6 +99,5 @@ function App() {
     </>
   )
 }
-// feature login change
 
 export default App
