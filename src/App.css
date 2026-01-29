@@ -50,3 +50,10 @@
 }
 
 
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #020617, #02030f, #000);
+}
